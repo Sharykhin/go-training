@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"go-training/packages/init"
+	_ "go-training/packages/init"
 	"private/validation"
 )
 
