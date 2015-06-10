@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Socket.IO chat</title>
+	<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+
+	<style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 10px; }
+      #messages li:nth-child(odd) { background: #eee; }
+    </style>
+</head>
+<body>
+<div>
+	<h3>Rooms</h3>
+	<div id="rooms">
+		
+	</div>
+	<input class="roomval" type="text" placeholder="create a room" /><input class="create" type="button" value="create" />
+</div>
+<div style="width:300px;">
+	<h3>Users</h3>
+	<ul class="users">
+	</ul>
+</div>
+<ul id="messages"></ul>
+    <form action="">
+      <input id="m" autocomplete="off" /><button>Send</button>
+    </form>
+
+<script>
+  		var socket = io();
+  		$('form').submit(function(){  			
+		    socket.emit('chat message', $('#m').val());
+		    console.log($('#m').val());
+		    $('#m').val('');
+		    return false;
+		  });
+
+  		$('.create').on("click",function(){
+  			socket.emit("create", $('.roomval').val() );
+  			$('.roomval').val('');
+  		});
+
+  		
+
+  		function ReInitialize() {
+  			$('#rooms span').off('click');
+  			$('#rooms span').on('click',function(){
+  				console.log($(this).text());
+  				socket.emit("join",$(this).text())  			
+  			});
+
+  			$('.users').off('click');
+  			$('.users').on('click',function(){    			
+  				socket.emit("join",$.trim($(this).text()))  			
+  			});
+  		}
+
+  		socket.on("users", function(user){
+  			$('.users').append($('<li>').text(user));
+  			ReInitialize();
+  		})
+  		socket.on('chat message', function(msg){
+		    $('#messages').append($('<li>').text(msg));
+		  });
+
+  		socket.on("create",function(room){
+			$('#rooms').append("<span><strong>" + room + "</strong></span>")	;
+			ReInitialize();
+  		})
+
+  		socket.on("my message", function(msg){
+  			console.log('Your private message');
+  		})
+
+  		socket.on("leave", function(id) {
+  			$('.users li:contains("' + id + '")').remove()
+  		});
+
+	</script>
+</body>
+</html>
