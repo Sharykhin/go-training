@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<title>Socket.IO Chat Example</title>
 	<link rel="stylesheet" href="/vendor/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 	<div class="container">
@@ -17,11 +18,22 @@
 						    What to do <span class="caret"></span>
 						  </button>
 						  <ul class="dropdown-menu">
-						    <li><a href="#">Enter to chat</a></li>						    
+						    <li><a  href="#">Enter to chat</a></li>						    
 						    <li role="separator" class="divider"></li>
-						    <li><a href="#">Enter your name</a></li>
+						    <li><a class="enter-name" href="#">Enter your name</a></li>
 						  </ul>
 						</div>
+						<div class="username">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input-group">									  
+									  <input type="text" class="form-control" placeholder="Username">
+									  <input type="button" class="submit-name primary btn" value="Enter" />
+									</div>
+								</div>
+							</div>
+						</div>
+
 					</div>
 				</div>
 			</div>
